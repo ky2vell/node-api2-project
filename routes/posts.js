@@ -124,14 +124,17 @@ router.get('/:id/comments', (req, res) => {
     });
 });
 
-// POST a comment for specified post
+// Create a comment for specified post
 router.post('/:id/comments', (req, res) => {
   if (!req.body.text) {
     return res.status(400).json({
       errorMessage: 'Please provide text for the comment.'
     });
   }
-  Posts.insertComment(req.params.id, req.body)
+  Posts.insertComment({
+    text: req.body.text,
+    post_id: req.body.post_id
+  })
     .then(post => {
       res.status(201).json(post);
     })
